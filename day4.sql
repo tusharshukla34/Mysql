@@ -1,12 +1,9 @@
 use cybrom;
-drop table info7;
-# default
-#check
+# default  #check
 create table info4 (id int unique not null,age int check(age>18),name varchar(30),city varchar(30) default "bhopal");
 insert into info4 (id,age,name,city) values(1,34,"tushar","indore");
 select * from info4;
 insert into info4 (id,age,name) values(2,20,"tushar");
-
 
 # primary key (we can say combination of not null and unique)
 
