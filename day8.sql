@@ -6,7 +6,7 @@ describe hospital;
 
 # steps to drop foreign key
 alter table patient drop foreign key patient_ibfk_1;    # 1st we drop foreign key relation
-alter table patient drop key doc_id;                     # 2nd we drop key reference
+alter table patient drop key doc_id;                    # 2nd we drop key reference
 
 alter table hospital drop foreign key hospital_ibfk_2;
 alter table hospital drop key pat_id;
