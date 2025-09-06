@@ -1,5 +1,5 @@
 use dummy;
-select * from customers;
+
 # Sequential  # order by 
 
 # categorical data
