@@ -20,3 +20,8 @@ table1.id = table2.id;
 
 #cross join
 select * from table1 cross join table2;
+
+
+#natural join
+select * from table1 natural join table2;
+
