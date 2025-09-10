@@ -1,5 +1,4 @@
 use dummy;
-
 # or
 select c.customernumber, c.customername,c.country,o.ordernumber,o.status from customers as c inner join orders as o on
 c.customernumber = o.customernumber
