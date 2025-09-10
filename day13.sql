@@ -25,3 +25,7 @@ select * from table1 cross join table2;
 #natural join
 select * from table1 natural join table2;
 
+
+# distinct data for only table2
+
+select distinct id from table2;
