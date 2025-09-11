@@ -10,6 +10,5 @@ select c.customernumber,c.customername,c.city,o.ordernumber,o.status,p.amount fr
 customers as c inner join orders as o on c.customernumber = o.customernumber
 inner join payments p on o.customernumber = p.customernumber; 
 
-# using      on the basis of similar datatypes/values or name
+# using      
 select * from customers inner join orders using(customernumber);
-
