@@ -1,6 +1,5 @@
 use dummy;
 
-
 select * from payments;
 select * from orderdetails;
 select * from orders;
