@@ -1,23 +1,15 @@
 create database joins1;
 use joins1;
-
-select * from customers;
-
-select * from orders;
-
 CREATE TABLE CUSTOMERS (
     customer_id INT PRIMARY KEY,
     customer_name VARCHAR(50),
-    city VARCHAR(50)
-);
-
+    city VARCHAR(50) );
 INSERT INTO CUSTOMERS (customer_id, customer_name, city) VALUES
 (1, 'Alice', 'New York'),
 (2, 'Bob', 'Los Angeles'),
 (3, 'Charlie', 'Chicago'),
 (4, 'David', 'Houston'),
 (5, 'Emma', 'Miami');
-
 
 CREATE TABLE ORDERS (
     order_id INT PRIMARY KEY,
