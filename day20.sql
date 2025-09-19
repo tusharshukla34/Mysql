@@ -96,7 +96,7 @@ select bid,sid,sname,age,color,(age+age+age)/3 as avg_is from sailors join reser
 
 -- Question 9: List the boat names that have never been reserved.
 
-select * from reserves join boats using(bid) where sid is null;
+select * from reserves join boats using(bid) where bid is null;
 
 -- Question 10: Find the names of sailors who have reserved at least two different boats on the same day.
 
