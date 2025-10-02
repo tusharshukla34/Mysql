@@ -93,10 +93,8 @@ INSERT INTO order_details (order_detail_id, order_id, product_id, quantity, unit
 
 -- 1. Show each customer and the total number of orders they have placed.
 
-select count(od.order_id) as total_orders , c.customer_name from customers c join orders o on c.customer_id = o.customer_id join 
-order_details od on o.order_id = od.order_id group by c.customer_name;
-
-
+select c.customer_name , count(o.order_id) as total_orders from customers c left join orders o on c.customer_id = o.customer_id
+group by customer_name;
 
 -- 2. Show each customer and their total purchase amount.
 
@@ -120,21 +118,55 @@ group by c.customer_name;
 
 -- 6. Show each product and total units sold.
 
-select p.product_id, count(od.product_id) as total_unit from products join order_details od on p.product_id = od.product_id 
+select p.product_name, sum(od.quantity) as total_unit from products p join order_details od on p.product_id = od.product_id 
 group by product_name;
 
 -- 7. Find total revenue generated per product category.
 
-select p.category , sum(p.unit_price);
-
+select p.category,sum(od.quantity * p.unit_price) as Total_revenue from products p join order_details od on p.product_id = od.product_id
+group by p.category ;
 
 -- 8. Group by month from order_date and show total order count.
 
-select date_format(o.order_date,"%m") as order_month , count(o.order_id) from customers c join orders o on 
-c.customer_id = o.customer_id group by order_month;
+select date_format(order_date,"%m") as order_month , count(order_id) from orders group by order_month;
 
 -- or 
 
 select monthname(o.order_date) as order_month , count(o.order_id) from customers c join orders o on 
 c.customer_id = o.customer_id group by order_month;
 
+-- 9. Show monthly total sales.
+
+select date_format(order_date,"%m") as monthly_sale , sum(total_amount) from orders group by monthly_sale;
+
+-- 10. Show each product and its average quantity sold.
+
+select p.product_id , p.product_name , avg(od.quantity) as avg_quantity from products p join order_details od 
+on p.product_id = od.product_id group by od.product_id,p.product_name;
+
+-- 11. Show total revenue per customer grouped by country.
+
+select c.country, c.customer_name , sum(o.total_amount) from customers c join orders o on c.customer_id = o.customer_id 
+group by c.country,c.customer_name;
+
+-- 12. Join customers, orders, order_details, and products to show revenue per category per country.
+
+select sum(total_);
+
+-- 13. Show customer name, category, and total revenue.
+
+SELECT c.customer_name,p.category,SUM(od.quantity * od.unit_price) AS revenue FROM customers c JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_details od ON o.order_id = od.order_id JOIN products p ON od.product_id = p.product_id
+GROUP BY c.customer_name, p.category;
+
+-- 14. Count how many distinct products each customer has purchased.
+
+select count(distinct(p.product_name)) as distinct_product ,c.customer_name  from customers c join orders o on c.customer_id = o.customer_id join order_details od on o.order_id = od.order_id
+join products p on od.product_id = p.product_id group by c.customer_name;
+
+-- 15. Show number of orders grouped by city.
+-- 16. Show customers whose total revenue exceeds ₹1000.
+-- 17. Show products where total quantity sold &gt; 50.
+-- 18. Show countries whose average order value is above ₹500.
+-- 19. Show categories where total revenue &gt; ₹5000.
+-- 20. Find months where order count &gt; 10.
