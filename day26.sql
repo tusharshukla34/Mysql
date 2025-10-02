@@ -165,8 +165,31 @@ select count(distinct(p.product_name)) as distinct_product ,c.customer_name  fro
 join products p on od.product_id = p.product_id group by c.customer_name;
 
 -- 15. Show number of orders grouped by city.
+
+select count(o.order_id) as number_of_orders , c.city from customers c join orders o on c.customer_id = o.customer_id 
+group by c.city;
+
 -- 16. Show customers whose total revenue exceeds ₹1000.
--- 17. Show products where total quantity sold &gt; 50.
+
+select c.customer_name, sum(o.total_amount) as total_revenue from customers c join orders o on c.customer_id = o.customer_id
+group by c.customer_name having total_revenue > 1000;
+
+-- 17. Show products where total quantity sold > 50.
+
+select p.product_name , sum(od.quantity) as total_units from products p join order_details od on p.product_id = od.product_id
+group by p.product_name having total_units > 50;
+
 -- 18. Show countries whose average order value is above ₹500.
--- 19. Show categories where total revenue &gt; ₹5000.
--- 20. Find months where order count &gt; 10.
+
+select c.country , avg(o.total_amount) as AVO from customers c join orders o on c.customer_id = o.customer_id
+group by c.country having avo > 500;
+
+-- 19. Show categories where total revenue > ₹5000.
+
+select p.category , sum(p.unit_price * od.quantity) as Total_revenue from products p join order_details od on p.product_id = od.product_id
+group by p.category having total_revenue > 5000;
+
+-- 20. Find months where order count > 10.
+
+select date_format(order_date,"%m") as Months , count(order_id) as order_count from orders
+group by months having order_count > 10; 
