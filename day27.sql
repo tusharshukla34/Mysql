@@ -52,7 +52,8 @@ alter table students modify column f_name char(120);
 update students set sname = "shailendra" where stu_id = 3;
 
 # delete value
-del;
+select * from students;
+delete from students where stu_id = 4;
 
 # rename table
 rename table students to studentss;
