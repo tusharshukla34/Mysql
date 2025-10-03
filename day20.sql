@@ -92,7 +92,7 @@ select bid,sid,sname,age,color,(age+age+age)/3 as avg_is from sailors join reser
 
 -- Question 8: Find the sailor names along with the number of boats they have reserved.
 
-
+select count(r.bid) as number_of_boats , sname from sailors s join reserves r on s.sid = r.sid group by s.sname;
 
 -- Question 9: List the boat names that have never been reserved.
 
@@ -104,9 +104,11 @@ select sname from sailors join reserves using(sid) where ;
 
 -- Question 11: Find the sailors who have reserved boats more than three times.
 
-select * from sailors join reserves using(sid) where sid > 3; -----------
+select count(r.bid) as total_boats , s.sname from sailors s inner join reserves r on s.sid = r.sid group by s.sname having total_boats > 3; 
 
 -- Question 12: List all sailors and the total number of different days they have made reservations.
+
+select count(r.day) , s.sname from sailors s join reserves r on s.sid = r.sid group by; 
 
 
 
