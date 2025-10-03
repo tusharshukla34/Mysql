@@ -151,7 +151,8 @@ group by c.country,c.customer_name;
 
 -- 12. Join customers, orders, order_details, and products to show revenue per category per country.
 
-select sum(total_);
+select p.category , c.country,sum(o.total_amount) as revenue  from customers c join orders o on c.customer_id = o.customer_id join order_details od on o.order_id = od.order_id
+join products p on od.product_id = p.product_id group by c.country,p.category ;
 
 -- 13. Show customer name, category, and total revenue.
 
@@ -161,7 +162,7 @@ GROUP BY c.customer_name, p.category;
 
 -- 14. Count how many distinct products each customer has purchased.
 
-select count(distinct(p.product_name)) as distinct_product ,c.customer_name  from customers c join orders o on c.customer_id = o.customer_id join order_details od on o.order_id = od.order_id
+select count(distinct p.product_name) as distinct_product ,c.customer_name from customers c join orders o on c.customer_id = o.customer_id join order_details od on o.order_id = od.order_id
 join products p on od.product_id = p.product_id group by c.customer_name;
 
 -- 15. Show number of orders grouped by city.
