@@ -85,4 +85,3 @@ select * from s_view;
 create algorithm = temptable view 
 sa_view (stu_id , sname) as (select stu_id, sname from students);
 select * from sa_view;
-
