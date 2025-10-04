@@ -35,6 +35,10 @@ select * from teachers;
 select * from students;
 alter table students add column father_name varchar(39);
 
+# revove the col
+select * from students;
+alter table students drop column f_name;
+
 # add values to new col
 update students set father_name = "uiuiuiui" where stu_id = 1;
 
