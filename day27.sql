@@ -35,7 +35,7 @@ select * from teachers;
 select * from students;
 alter table students add column father_name varchar(39);
 
-# revove the col
+# remove the col
 select * from students;
 alter table students drop column f_name;
 
@@ -90,3 +90,9 @@ select * from s_view;
 create algorithm = temptable view 
 sa_view (stu_id , sname) as (select stu_id, sname from students);
 select * from sa_view;
+
+# Use this query to list all constraints on a table
+SELECT constraint_name, constraint_type, table_name
+FROM information_schema.table_constraints
+WHERE table_name = 'students';
+
