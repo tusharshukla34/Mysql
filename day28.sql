@@ -95,8 +95,8 @@ select * from departments where dept_id not in (select dept_id from employees wh
 
 -- 7. Display employee names who work on the same project(s) as employee ID 101.
 
-select e.emp_name from employees e join timesheets t using(emp_id) where emp_id in
- (select project_id from timesheets Where emp_id = 101); 
+select distinct e.emp_name,t.project_id from employees e join timesheets t using(emp_id) where e.emp_id in
+ (select t.emp_id from timesheets t Where emp_id = 101); 
 
 -- 8. Find the department name of the employee who earns the minimum salary.
 
@@ -128,9 +128,12 @@ select * from employees where emp_id not in (select emp_id from timesheets);
  
 select dept_id,count(emp_id) as number_of_emp, avg(salary) as avg_salary from employees group by dept_id having number_of_emp > 2;
 
+select dept_id,count(emp_id) as count_emp from employees group by dept_id;
 
 
 -- 12. Show each department and the total hours worked by its employees on all projects.
+
+
 
 select e.dept_id, sum(t.hours_worked) from employees e join timesheets t using(emp_id) group by e.dept_id;
 
