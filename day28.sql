@@ -135,7 +135,7 @@ select dept_id,count(emp_id) as count_emp from employees group by dept_id;
 
 
 
-select e.dept_id, sum(t.hours_worked) from employees e join timesheets t using(emp_id) group by e.dept_id;
+select e.emp_id,dept_id ,sum(t.hours_worked) as total_hours_worked  from employees e join timesheets t using(emp_id) group by e.emp_id;
 
 
 # Subqueries with IN, NOT IN, EXISTS, NOT EXISTS
