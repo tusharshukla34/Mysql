@@ -46,8 +46,8 @@ select customername, creditlimit from customers where creditlimit > (select max(
 select c.customername , count(o.customernumber) as total_order from customers c join orders o on c.customernumber = o.customernumber
  group by c.customername order by total_order desc; 
  
- select c.customername , sum(od.quantityordered)  as total_order from customers c join orders o on c.customernumber = o.customernumber
-  join  orderdetails od on o.ordernumber = od.ordernumber group by c.customername order by total_order desc; 
+select c.customername  from customers c join orders o on c.customernumber = o.customernumber
+where o.customernumber in (select count(o.customernumber) from orders o );
 
 -- 7 Retrieve customers who have never placed an order.
 
@@ -69,19 +69,21 @@ select c.customernumber, sum(p.amount)as payments from customers c  join orders 
 group by c.customernumber order by payments desc ;
 
 select c.customernumber from customers c  join orders o on c.customernumber = o.customernumber join payments p on o.customernumber = p.customernumber
-where p.amount = (select sum(p.amount) as payments from payments order by payments desc limit 1 );
+where p.amount = (select sum(p.amount) as payments from payments group by customernumber order by payments desc limit 1 );
 
 -- 10 Find products that have never been ordered
 
 select p.productname,p.productcode from products p left join orderdetails od on p.productcode = od.productcode
  where od.productcode is null;
+ 
+select productname,productcode from products  where productcode not in (select productcode from orderdetails) ;
 
 -- 11 Retrieve the most expensive product(s).
-
-select p.productname,p.productcode,od.priceeach from products p left join orderdetails od on p.productcode = od.productcode
- order by od.priceeach desc limit 1;
  
  select p.productname,p.productcode,p.msrp from products p order by msrp desc limit 1 ;
+ 
+ 
+ select productname,productcode,msrp from products where msrp = (select max(msrp) from products);
 
 -- 12 Retrieve the total revenue from each product category and list only categories where revenue is above the average revenue.
 
@@ -92,3 +94,13 @@ select p.productname, sum(od.quantityordered * od.priceeach) as total_revenue , 
 select p.productname, sum(od.quantityordered * od.priceeach) as total_revenue from products p
  join orderdetails od on p.productcode = od.productcode group by p.productname having total_revenue >
  (select  avg(quantityordered * priceeach) from orderdetails );
+ 
+ 
+ 
+ select p.productname, sum(od.quantityordered * od.priceeach) as total_revenue from products p
+ join orderdetails od on p.productcode = od.productcode group by p.productname having total_revenue > 
+ (select avg(total_rev) from ( select SUM(quantityordered * priceeach) as total_rev from orderdetails GROUP BY productcode) as t);
+ 
+ 
+ 
+--  6,9,12 
