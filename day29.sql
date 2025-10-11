@@ -18,7 +18,7 @@ select customername , customernumber, creditlimit from customers where creditlim
 
 -- 3 Get the customers who have placed at least one order (assuming orders table has a customerNumber foreign key).
 
-select c.customername , c.customernumber from customers c join orders o on c.customernumber = o.customernumber;
+select distinct c.customername , c.customernumber from customers c join orders o on c.customernumber = o.customernumber;
 
 
 select c.customername , c.customernumber from customers c where customernumber in 
@@ -46,8 +46,10 @@ select customername, creditlimit from customers where creditlimit > (select max(
 select c.customername , count(o.customernumber) as total_order from customers c join orders o on c.customernumber = o.customernumber
  group by c.customername order by total_order desc; 
  
-select c.customername  from customers c join orders o on c.customernumber = o.customernumber
-where o.customernumber in (select count(o.customernumber) from orders o );
+select c.customername  from customers where customernumber in (select customernumber from orders group by customernumber
+having count(*) = (select max(order_count) from
+(select count(*) as order_count
+from orders group by customernumber)as counts));
 
 -- 7 Retrieve customers who have never placed an order.
 
@@ -57,19 +59,21 @@ select * from customers where customernumber not in (select customernumber from 
 
 -- 8 Find customers who have placed orders but have never made a payment.
 
-select * from customers c  join orders o on c.customernumber = o.customernumber join payments p on o.customernumber = p.customernumber
-where ordernumber is null;
+select * from customers c  join orders o on c.customernumber = o.customernumber left join payments p on o.customernumber = p.customernumber
+where p.customernumber is null;
+
+-- senario changed here
+select * from customers c  left join payments p on c.customernumber = p.customernumber
+where p.customernumber is null;
 
 select * from customers c  join orders o on c.customernumber = o.customernumber where o.ordernumber not in
 (select ordernumber from payments);
 
 -- 9 Get the customers who made the highest total payment.
 
-select c.customernumber, sum(p.amount)as payments from customers c  join orders o on c.customernumber = o.customernumber join payments p on o.customernumber = p.customernumber
-group by c.customernumber order by payments desc ;
+select c.customernumber, sum(p.amount)as payments from customers c  join payments p on c.customernumber = p.customernumber
+group by c.customernumber order by payments desc limit 1;
 
-select c.customernumber from customers c  join orders o on c.customernumber = o.customernumber join payments p on o.customernumber = p.customernumber
-where p.amount = (select sum(p.amount) as payments from payments group by customernumber order by payments desc limit 1 );
 
 -- 10 Find products that have never been ordered
 
@@ -87,20 +91,9 @@ select productname,productcode from products  where productcode not in (select p
 
 -- 12 Retrieve the total revenue from each product category and list only categories where revenue is above the average revenue.
 
-select p.productname, sum(od.quantityordered * od.priceeach) as total_revenue , avg(od.quantityordered * od.priceeach) as avg_rev from products p
- join orderdetails od on p.productcode = od.productcode group by p.productname having total_revenue > avg_rev ;
-
-
-select p.productname, sum(od.quantityordered * od.priceeach) as total_revenue from products p
- join orderdetails od on p.productcode = od.productcode group by p.productname having total_revenue >
- (select  avg(quantityordered * priceeach) from orderdetails );
- 
- 
  
  select p.productname, sum(od.quantityordered * od.priceeach) as total_revenue from products p
  join orderdetails od on p.productcode = od.productcode group by p.productname having total_revenue > 
  (select avg(total_rev) from ( select SUM(quantityordered * priceeach) as total_rev from orderdetails GROUP BY productcode) as t);
  
  
- 
---  6,9,12 
