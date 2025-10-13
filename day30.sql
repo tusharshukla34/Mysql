@@ -1,0 +1,133 @@
+create database windowfun;
+use windowfun;
+
+
+
+CREATE TABLE sales_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sales_rep VARCHAR(50),
+    region VARCHAR(50),
+    product VARCHAR(50),
+    month VARCHAR(20),
+    sales_amount DECIMAL(10,2)
+);
+
+
+
+INSERT INTO sales_data (sales_rep, region, product, month, sales_amount) VALUES
+('Alice', 'North', 'Laptop', 'Jan', 1200.00),
+('Bob', 'South', 'Tablet', 'Jan', 800.00),
+('Charlie', 'East', 'Laptop', 'Jan', 950.00),
+('David', 'West', 'Phone', 'Jan', 600.00),
+('Eva', 'North', 'Tablet', 'Feb', 1100.00),
+('Alice', 'North', 'Laptop', 'Feb', 1300.00),
+('Bob', 'South', 'Tablet', 'Feb', 850.00),
+('Charlie', 'East', 'Laptop', 'Feb', 1000.00),
+('David', 'West', 'Phone', 'Feb', 700.00),
+('Eva', 'North', 'Tablet', 'Mar', 1200.00),
+('Alice', 'North', 'Laptop', 'Mar', 1250.00),
+('Bob', 'South', 'Tablet', 'Mar', 900.00),
+('Charlie', 'East', 'Laptop', 'Mar', 1050.00),
+('David', 'West', 'Phone', 'Mar', 650.00),
+('Eva', 'North', 'Tablet', 'Apr', 1150.00),
+('Alice', 'North', 'Laptop', 'Apr', 1400.00),
+('Bob', 'South', 'Tablet', 'Apr', 950.00),
+('Charlie', 'East', 'Laptop', 'Apr', 1100.00),
+('David', 'West', 'Phone', 'Apr', 800.00),
+('Eva', 'North', 'Tablet', 'May', 1180.00),
+('Alice', 'North', 'Laptop', 'May', 1350.00);
+
+
+
+CREATE TABLE sales1_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sales_rep VARCHAR(50),
+    region VARCHAR(50),
+    product VARCHAR(50),
+    month VARCHAR(20),
+    sales_amount DECIMAL(10,2)
+);
+
+
+
+INSERT INTO sales1_data (sales_rep, region, product, month, sales_amount) VALUES
+('Alice', 'North', 'Laptop', 'Jan', 1200.00),
+('Bob', 'South', 'Tablet', 'Jan', 800.00),
+('Charlie', 'East', 'Laptop', 'Jan', 950.00),
+('David', 'West', 'Phone', 'Jan', 600.00),
+('Eva', 'North', 'Tablet', 'Feb', 1100.00),
+('Alice', 'North', 'Laptop', 'Feb', 1300.00),
+('Bob', 'South', 'Tablet', 'Feb', 850.00),
+('Charlie', 'East', 'Laptop', 'Feb', 1000.00),
+('David', 'West', 'Phone', 'Feb', 700.00),
+('Eva', 'North', 'Tablet', 'Mar', 1200.00),
+('Alice', 'North', 'Laptop', 'Mar', 1250.00),
+('Bob', 'South', 'Tablet', 'Mar', 900.00),
+('Charlie', 'East', 'Laptop', 'Mar', 1050.00),
+('David', 'West', 'Phone', 'Mar', 650.00),
+('Eva', 'North', 'Tablet', 'Apr', 1150.00),
+('Alice', 'North', 'Laptop', 'Apr', 1400.00),
+('Bob', 'South', 'Tablet', 'Apr', 950.00),
+('Charlie', 'East', 'Laptop', 'Apr', 1100.00),
+('David', 'West', 'Phone', 'Apr', 800.00),
+('Eva', 'North', 'Tablet', 'May', 1180.00),
+('Alice', 'North', 'Laptop', 'May', 1350.00);
+
+
+
+CREATE TABLE IF NOT EXISTS sales1(
+    sales_employee VARCHAR(50) NOT NULL,
+    fiscal_year INT NOT NULL,
+    sale DECIMAL(14,2) NOT NULL,
+    PRIMARY KEY(sales_employee,fiscal_year)
+);
+ 
+INSERT INTO sales1(sales_employee,fiscal_year,sale)
+VALUES('Bob',2016,100),
+      ('Bob',2017,150),
+      ('Bob',2018,200),
+      ('Alice',2016,150),
+      ('Alice',2017,100),
+      ('Alice',2018,200),
+       ('John',2016,200),
+      ('John',2017,150),
+      ('John',2018,250);
+
+
+
+
+select * from sales_data;
+
+select sales_rep,region,month ,
+sum(sales_amount) over (partition by region) per_region
+from sales_data;
+
+select sales_rep,region,month ,
+sum(sales_amount) over (partition by sales_rep) per_person
+from sales_data;
+
+
+select sales_rep,region,month ,product,
+avg(sales_amount) over (partition by product) per_person
+from sales_data;
+
+select sales_rep,region,month ,product,
+avg(sales_amount) over (partition by month) per_person
+from sales1_data;
+
+
+select * from sales1;
+
+select *, rank() over (partition by fiscal_year order by sale) total_sales     # it skips the row see last row output
+from sales1;
+
+
+
+select *, dense_rank()  over (partition by fiscal_year order by sale) total_sales  # it does not skips the row see last row output
+from sales1;
+
+-- 1.	Rank sales reps by their total sales within each month. (Use RANK() function with PARTITION BY month)
+-- 2.	Show the cumulative (running) total of sales for each sales rep across months. (Use SUM() as a window function ordered by month)
+-- 3.	Find the average monthly sales amount for each region.  (Use AVG() with PARTITION BY region)
+-- 4.	Compare each month’s sales amount with the previous month's sales for each sales rep.   (Use LAG() window function)
+-- 5.	Find the sales amount of the next month for each sales rep.  (Use LEAD() window function)
