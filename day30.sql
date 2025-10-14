@@ -118,16 +118,58 @@ from sales1_data;
 
 select * from sales1;
 
+# rank       it does not skip rows        (no. of rows)
 select *, rank() over (partition by fiscal_year order by sale) total_sales     # it skips the row see last row output
 from sales1;
 
 
-
+# dense_rank       it skip rows        (no. of rows)
 select *, dense_rank()  over (partition by fiscal_year order by sale) total_sales  # it does not skips the row see last row output
 from sales1;
 
+# lead
+select *, lead(sale) over (partition by sales_employee order by fiscal_year desc)
+from sales1;
+
+# lag
+select *, lag(sale) over (partition by sales_employee order by fiscal_year desc)
+from sales1;
+
+# multiple col
+select *, sum(sale) over (partition by fiscal_year order by sale) total_sales  ,
+rank() over (partition by fiscal_year order by sale) rank_sales     # it skips the row see last row output
+from sales1;
+
+
+
 -- 1.	Rank sales reps by their total sales within each month. (Use RANK() function with PARTITION BY month)
+
+select *, rank() over (partition by month order by sales_amount desc) rank_emp from sales1_data;
+
 -- 2.	Show the cumulative (running) total of sales for each sales rep across months. (Use SUM() as a window function ordered by month)
+
+select *,sum(sales_amount) over (partition by month) amount_emp from sales1_data;
+
 -- 3.	Find the average monthly sales amount for each region.  (Use AVG() with PARTITION BY region)
+
+select *, avg(sales_amount) over(partition by region) avg_sal from sales1_data;
+
 -- 4.	Compare each month’s sales amount with the previous month's sales for each sales rep.   (Use LAG() window function)
+
+select *, lag(sales_amount) over(partition by month) from sales1_data;
+
 -- 5.	Find the sales amount of the next month for each sales rep.  (Use LEAD() window function)
+
+select *, lead(sales_amount) over(partition by sales_rep) from sales1_data;
+
+
+6.	Find what percentage of the total regional sales is contributed by each record.
+(Use SUM() in denominator and compute percentage)
+7.	For each sales rep, find their highest monthly sales amount (and display it alongside each row).
+(Use MAX() as window function)
+8.	Check whether each sales rep’s sales increased or not compared to their previous month.
+(Use LAG() with CASE WHEN logic)
+9.	Assign a row number to each sales rep within their region and month based on sales amount.
+(Use ROW_NUMBER() function)
+10.	Compare each record’s sales amount with the average sales of that region and month.
+(Use AVG() and subtraction to calculate the difference)
