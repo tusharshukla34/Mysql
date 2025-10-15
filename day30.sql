@@ -110,19 +110,22 @@ select *, rank() over (partition by month order by sales_amount desc) rank_emp f
 
 -- 2.	Show the cumulative (running) total of sales for each sales rep across months. (Use SUM() as a window function ordered by month)
 
-select *, sum(sales_amount) over (partition by sales_rep order by month) running_total from sales1_data;
+select sales_rep,month,sales_amount, sum(sales_amount) over (partition by sales_rep order by month) running_total from sales1_data;
 
 -- 3.	Find the average monthly sales amount for each region.  (Use AVG() with PARTITION BY region)
 
 select *, avg(sales_amount) over(partition by region) avg_sal from sales1_data;
 
+
+# Case statement
+
 -- 4.	Compare each month’s sales amount with the previous month's sales for each sales rep.   (Use LAG() window function)
 
-select *, lag(sales_amount) over(partition by sales_rep order by month) from sales1_data;
+select sales_rep,month,sales_amount, lag(sales_amount) over(partition by sales_rep) as prev_sale from sales1_data;
 
 -- 5.	Find the sales amount of the next month for each sales rep.  (Use LEAD() window function)
 
-select *, lead(sales_amount) over(partition by sales_rep order by month) from sales1_data;
+select sales_rep,month,sales_amount, lead(sales_amount) over(partition by sales_rep order by month) as next_month from sales1_data;
 
 -- 6.	Find what percentage of the total regional sales is contributed by each record.  (Use SUM() in denominator and compute percentage)
 
@@ -132,17 +135,23 @@ select *, sum(sales_amount) over(partition by region) Total_sales,
 
 select *, (sales_amount / sum(sales_amount) over (partition by region)) * 100  percentage  from sales1_data;
 
+select *, round(100*sales_amount / sum(sales_amount) over (partition by sales_rep),2)  percentage  from sales1_data;
+
 -- 7.	For each sales rep, find their highest monthly sales amount (and display it alongside each row). (Use MAX() as window function)
 
-select *, max(sales_amount) over (partition by sales_rep) from sales1_data;
+select sales_rep,sales_amount,month, max(sales_amount) over (partition by sales_rep) from sales1_data;
 
 -- 8.	Check whether each sales rep’s sales increased or not compared to their previous month. (Use LAG() with CASE WHEN logic)
+
+# When logic
 
 select *,lag(sales_amount) over (partition by sales_rep) from sales1_data;
 
 -- 9.	Assign a row number to each sales rep within their region and month based on sales amount. (Use ROW_NUMBER() function)
 
 select *, row_number() over (partition by region,month order by sales_amount desc) row_num from sales1_data;
+
+select *, row_number() over (partition by sales_rep order by month,region desc) row_num from sales1_data;
 
 -- 10.	Compare each record’s sales amount with the average sales of that region and month. (Use AVG() and subtraction to calculate the difference)
 
