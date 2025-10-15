@@ -141,4 +141,11 @@ select *, max(sales_amount) over (partition by sales_rep) from sales1_data;
 select *,lag(sales_amount) over (partition by sales_rep) from sales1_data;
 
 -- 9.	Assign a row number to each sales rep within their region and month based on sales amount. (Use ROW_NUMBER() function)
+
+select *, row_number() over (partition by region,month order by sales_amount desc) row_num from sales1_data;
+
 -- 10.	Compare each record’s sales amount with the average sales of that region and month. (Use AVG() and subtraction to calculate the difference)
+
+select *, avg(sales_amount) over(partition by region,month) avg_sales ,
+(sales_amount - avg(sales_amount) over(partition by region,month)) as difference_betw_sales_and_avg_sales
+from sales1_data;
