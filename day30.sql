@@ -58,7 +58,7 @@ VALUES('Bob',2016,100),
 
 
 
-select * from sales_data;
+select * from sales1_data;
 
 select sales_rep,region,month ,
 sum(sales_amount) over (partition by region) per_region
@@ -143,7 +143,12 @@ select sales_rep,sales_amount,month, max(sales_amount) over (partition by sales_
 
 -- 8.	Check whether each sales rep’s sales increased or not compared to their previous month. (Use LAG() with CASE WHEN logic)
 
-# When logic
+select sales_rep,month,sales_amount , sales_amount - lag(sales_amount) over (partition by sales_rep) as salary_deference,
+case when salary_deference > 0 then 'increased'
+when salary_deference < 0 then 'decreased'
+else 'na'
+end as compare
+from sales1_data;
 
 select *,lag(sales_amount) over (partition by sales_rep) from sales1_data;
 
