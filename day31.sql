@@ -102,15 +102,7 @@ from student;
 
 
 
---  8. Determine Account Status
 
-
-create table users(User_ID int,Name varchar(30),Status varchar(40));
-
-insert into users(User_ID,Name,Status)
-values(1,'John','Active'),
-(2,'Mike','Suspended'),
-(3,'Emma','Inactive');
 
 
 
