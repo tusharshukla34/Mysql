@@ -36,7 +36,6 @@ from employees;
 --  3. Convert Department Codes to Full Names
 -- Question: Replace department names with "Human Resources", "Information Technology", and "Financial Services".
 
-
 select emp_name,dept, 
 case when dept = 'hr' then  "human resource"
 when dept = 'it' then "Information technology"
@@ -44,7 +43,6 @@ when dept = 'finance' then  "Financial service"
 else 'Na'
 end as New_dept
 from employees;
-
 
 
 -- 4. Calculate Bonus Based on Salary
