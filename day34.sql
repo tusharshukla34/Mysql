@@ -31,5 +31,6 @@ Delimiter ;
 call getofficebycountryss('USA');
 
 drop procedure customerinfo;
-
+drop procedure customerage;
+drop procedure customercredit;
 
