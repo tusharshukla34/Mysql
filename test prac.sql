@@ -1,5 +1,6 @@
 create database finalprep;
-use finalprep;
+use dummy;
+show tables;
 
 
 
