@@ -89,11 +89,15 @@ group by p.product_name;
 
 -- 13. Write a query to find all sales where the total price is greater than the average total price of all sales.
 
-
+select * from sales where total_price > (select avg(total_price) as avg_Total_price from sales );
 
 -- 14. Add a check constraint to the quantity_sold column in the Sales table to ensure that the quantity sold is always greater than zero.
 
-
+desc sales;
+alter table sales add constraint chk_quantity check(quantity_sold > 0); 
 
 -- 15. Write a query that calculates the total revenue generated from each category of products for the year 2024.
 
+
+select p.category , sum(s.total_price) as revenue from sales s join products p on s.product_id = p.product_id where 
+sale_date between '2024-01-01' and '2024-12-31' group by p.category;

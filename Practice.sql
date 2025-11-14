@@ -1,61 +1,38 @@
-use dummy;
+use practice;
 
 show tables;
 
+select * from company;
 
--- use these two tables for practice
+create table store(sid int primary key, name varchar(45) not null,address varchar(90));
 
-select * from pcustomer;
-select * from porders;
+insert into store(sid,name,address) values (1,'v-mart','Near press complex MP nagar Bhopal');
 
-SET sql_safe_updates = 0;
-
-update porders set status ='On hold' where ordernumber = 10100;
-alter table porders change orderDate orderdates date;
-
-alter table porders modify column orderDates varchar(78);
-describe porders;
-
-alter table porders rename column orderdates to orderdate;
+select * from store;
 
 
-create table abc (id int primary key,
-name varchar(78) not null);
+rename table store to stores;
 
 
-create table abs(ids int,name varchar(67),
-primary key(ids));
+create table warehouse(sid int, wid int primary key, wname varchar(89) not null,
+foreign key(sid) references stores(sid));
 
-create table abss(id int,idss int auto_increment primary key,
-foreign key(id) references abc(id));
-
-desc abc;
-desc abs;
-desc abss;
-
-alter table abss drop foreign key abss_ibfk_1;
-alter table abss drop key id;
-
-alter table abss drop primary key;
-
-alter table abss modify idss int;
+desc warehouse;
 
 
+alter table warehouse drop foreign key warehouse_ibfk_1;
+alter table warehouse drop key sid;
 
 
-create view absdds as(select * from porders where ordernumber is null);
+create view ab as (select * from books);
 
-select * from absdds;
-
-
-create algorithm = temptable view absii (ordernumber ,orderdate) as
-(select ordernumber,orderdate from porders where orderdate = '2025-11-12' );
+create algorithm = temptable view bas (name,emp_id) as (select name,emp_id from company where country = 'china');
 
 
-select * from absii;
+select * from bas;
 
+drop view ab;
+drop view bas;
 
-drop view absdds;
-drop view absii;
 
 
