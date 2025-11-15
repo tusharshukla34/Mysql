@@ -2,6 +2,9 @@ create database finalprep;
 use dummy;
 show tables;
 
+select * from customers;
+select * from employees;
+select * from orders;
 
 
 
@@ -9,15 +12,19 @@ show tables;
 
 -- 2.	Select customer name from customer. Sort by customer name (122)
 
+select customername from customers order by customername;
 
 -- 3.	List each of the different status that an order may be in (6)
 
+select distinct status from orders;
 
--- 4.	List firstname and lastname for each employee. Sort by lastname then firstname (23)
+-- 4.	List firstname and lastname for each customers. Sort by lastname then firstname (23)
 
+select contactlastname,contactfirstname from customers order by contactlastname,contactfirstname;
 
 -- 5.	List all the employee job titles (7)
 
+select distinct jobtitle from employees;
 
 -- 6.	List all products along with their product scale (110)
 
