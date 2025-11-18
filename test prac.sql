@@ -29,6 +29,8 @@ select distinct jobtitle from employees;
 -- 6.	List all products along with their product scale (110)
 
 
+
+
 -- 7.	List all the territories where we have Offices (4)
 
 
