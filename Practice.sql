@@ -1,6 +1,7 @@
 use practice;
 
 show tables;
+desc ab;
 
 select * from company;
 
