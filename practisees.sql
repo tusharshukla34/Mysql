@@ -107,73 +107,110 @@ select * from ml cross join test;
 
 select count(* from ml cross join test);
 
-6️⃣ NATURAL JOIN
+-- NATURAL JOIN
 
-Show test details with names using NATURAL JOIN.
+-- Show test details with names using NATURAL JOIN.
 
-Show student name + marks sorted by marks DESC using NATURAL JOIN.
+-- Show student name + marks sorted by marks DESC using NATURAL JOIN.
 
-7️⃣ OUTER JOIN (concept total)
+-- OUTER JOIN (concept total)
 
-Show all test records and student names using FULL OUTER JOIN.
+-- Show all test records and student names using FULL OUTER JOIN.
 
-Show who has given tests and who has not with OUTER JOIN.
+-- Show who has given tests and who has not with OUTER JOIN.
 
-8️⃣ Operators (=, >, <, BETWEEN, IN)
+					# Operators (=, >, <, BETWEEN, IN)
 
 -- Get students who scored between 80 and 90.
 
-
+select * from ml join test using(ml_id) where marks between 80 and 90; 
 
 -- Show records where subject is IN ('Python','SQL','Networking').
 
-9️⃣ LIKE / NOT LIKE
+select * from ml join test using(ml_id) where subject in ('python','sql','networking');
+
+                      # LIKE / NOT LIKE
 
 -- Show all students whose name starts with 'R'.
 
+select * from ml where name like 'R%';
+
 -- Show subjects that do not contain the letter 'n'.
 
-🔟 DISTINCT
+select * from test where subject not like '%n%';
 
-Show unique course names from ml.
+                        # DISTINCT
 
-Show unique subjects from test.
+-- Show unique course names from ml.
 
-1️⃣1️⃣ VIEW
+select distinct course from ml;
 
-Create a view that stores name, subject, and marks.
+-- Show unique subjects from test.
 
-Select all data from the created view where marks > 85.
+select distinct subject from test;
 
-1️⃣2️⃣ GROUP BY + HAVING
+                          # VIEW
 
-Count how many tests each student has given.
+-- Create a view that stores name, subject, and marks.
 
-Show students who have given more than 1 test.
+create view store as (select m.name,t.subject,t.marks from ml m join test t using(ml_id));
 
-1️⃣3️⃣ SUBQUERY
+-- Select all data from the created view where marks > 85.
 
-Show student details who got the highest marks.
+select * from store where marks > 85;
 
-List subjects for which marks are above average marks.
+                         # GROUP BY + HAVING
 
-1️⃣4️⃣ WINDOW FUNCTIONS
+-- Count how many tests each student has given.
 
-Show student name, subject, marks, and a rank based on marks.
+select m.name,count(test_id) as Total_test from ml m join test t using(ml_id) group by m.name; 
 
-Show total marks of each student using Window SUM().
+select * from test;
 
-1️⃣5️⃣ CTE (WITH)
+-- Show students who have given more than 1 test.
 
-Use a CTE to find average marks and display tests above average.
+select m.name,count(test_id) as Total_test from ml m join test t using(ml_id) group by m.name having Total_test > 1;
 
-Use CTE to display number of tests per student.
+                              # SUBQUERY
 
--- STORED PROCEDURE
+-- Show student details who got the highest marks.
 
-Create a procedure to fetch test details by student id.
+select * from ml join test using(ml_id) where marks = (select max(marks) from test); 
 
-Create a procedure that displays students with marks above 80.
+
+select max(marks) from test;
+
+-- List subjects for which marks are above average marks.
+
+select name ,subject, marks from ml join test using(ml_id) where marks > (select avg(marks) from test);
+
+select avg(marks) from test;
+
+                       # WINDOW FUNCTIONS
+
+-- Show student name, subject, marks, and a rank based on marks.
+
+select name,subject, rank() over (order by marks DESC) as Rank_of_marks from ml join test using(ml_id);
+
+-- Show total marks of each student using Window SUM().
+
+select name,subject, sum(marks) over (partition by name) as Total_marks from ml join test using(ml_id);
+
+						# CTE (WITH)
+
+-- Use a CTE to find average marks and display tests above average.
+
+
+
+-- Use CTE to display number of tests per student.
+
+
+
+						# STORED PROCEDURE
+
+-- Create a procedure to fetch test details by student id.
+
+-- Create a procedure that displays students with marks above 80.
 
 -- TRIGGER
 
