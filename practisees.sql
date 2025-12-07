@@ -200,21 +200,42 @@ select name,subject, sum(marks) over (partition by name) as Total_marks from ml 
 
 -- Use a CTE to find average marks and display tests above average.
 
+with ab as (select avg(marks) from test )
+select * from test where marks > ab;
 
 
 -- Use CTE to display number of tests per student.
 
-
+with num as (select count(test_id) as Total_test from test t join ml m using(ml_id) )
+select name,total_test from num,ml;
 
 						# STORED PROCEDURE
 
 -- Create a procedure to fetch test details by student id.
 
+Delimiter //
+create procedure details()
+begin 
+select * from ml;
+end //
+Delimiter ;
+
+call details();
+
 -- Create a procedure that displays students with marks above 80.
 
--- TRIGGER
+Delimiter //
+create procedure markss()
+begin 
+select * from ml m join test t using(ml_id) where marks > 80 order by marks desc;
+end //
+Delimiter ;
 
-Create a trigger on test table that logs insert into audit table.
+call markss();
 
-Create a trigger to prevent inserting marks more than 100.
+                             # TRIGGER
+
+-- Create a trigger on test table that logs insert into audit table.
+
+-- Create a trigger to prevent inserting marks more than 100.
 
