@@ -96,3 +96,12 @@ SELECT constraint_name, constraint_type, table_name
 FROM information_schema.table_constraints
 WHERE table_name = 'students';
 
+
+
+use dummy;
+
+show tables;
+
+show databases;
+
+
