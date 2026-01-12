@@ -28,25 +28,29 @@ select distinct jobtitle from employees;
 
 -- 6.	List all products along with their product scale (110)
 
-
-
+select productname, productscale from products;
 
 -- 7.	List all the territories where we have Offices (4)
 
-
-
+show tables;
+select territory from offices;
 
 -- WHERE Clause
 -- 8.	select contact firstname, contact lastname and credit limit for all Customers where credit limit > 50000 (85)
 
+select * from customers;
+select contactfirstname , contactlastname , creditlimit from customers where creditlimit > 50000;
 
 -- 9.	select Customers who do not have a credit limit (0.00) (24)
 
+select * from customers where creditlimit = 0;
 
 -- 10.	List all Offices not in the USA (4)
 
+select * from offices where country not in ("USA");
 
 -- 11.	List Orders made between June 16, 2014 and July 7, 2014 (8)
+
 
 
 -- 12.	List products that we need to reorder (quantityinstock < 1000) (12)
