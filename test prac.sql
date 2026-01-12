@@ -51,22 +51,28 @@ select * from offices where country not in ("USA");
 
 -- 11.	List Orders made between June 16, 2014 and July 7, 2014 (8)
 
-
+select * from orders where orderdate between '2014-06-16' and '2014-07-07';
 
 -- 12.	List products that we need to reorder (quantityinstock < 1000) (12)
 
+show tables;
+select productname as need_to_reorder from products where quantityinstock < 1000;
 
 -- 13.	List all Orders that shipped after the required date (1)
 
+select * from orders where shippeddate > requireddate;
 
 -- 14.	List all Customers who have the word 'Mini' in their name (10)
 
+select customername from customers where customername like '%mini%';
 
 -- 15.	List all products supplied by 'Highway 66 Mini Classics' (9)
 
+select * from products where productvendor like "Highway 66 Mini Classics";
 
 -- 16.	List all product not supplied by 'Highway 66 Mini Classics' (101)
 
+select * from products where productvendor not like "Highway 66 Mini Classics";
 
 -- 17.	List all employees that don't have a manager (1)
 
